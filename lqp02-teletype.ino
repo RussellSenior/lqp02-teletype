@@ -12,6 +12,29 @@ static const int clockPin = 4;
 static const int dataPin = 5;
 bool debug = 0;
 bool local = 0;
+bool rolledUp = 0;
+int linesToRoll = 8;
+
+int rollUpToShow() {
+    if(!rolledUp) {
+        for (int i=0 ; i<linesToRoll ; i++) {
+            Printer.printf("%cD",ESCAPE);
+        }
+        rolledUp = 1;
+    }
+    return 0;
+}
+
+int rollDownToPrint() {
+    if(rolledUp) {
+        for (int i=0 ; i<(linesToRoll+1) ; i++) {
+            Printer.printf("%cM",ESCAPE);
+        }
+        Printer.printf("%cD",ESCAPE);
+        rolledUp = 0;
+    }
+    return 0;
+}
 
 int sendEscapeSequence(int f) {
     Serial.printf("sending escape sequence %d\n",f);
@@ -149,15 +172,26 @@ void setup() {
 static ps2::NeutralTranslator translator;
 bool pxon = 1;
 
+bool timedBefore = 0;
+unsigned long lastPrint = 0;
+
 void loop() {
     // diagnostics.setLedIndicator<LED_BUILTIN, ps2::DiagnosticsLedBlink::heartbeat>();
     int fromComputer;
     int fromPrinter;
+    unsigned long sinceLastPrint = millis() - lastPrint;
+
+    if (timedBefore && sinceLastPrint > 500) {
+        rollUpToShow();
+    }
 
     if (Computer.available() > 0 && pxon) {
         fromComputer = Computer.read();
         if (!local) {
+            rollDownToPrint();
             Printer.write(fromComputer);
+            lastPrint = millis();
+            timedBefore = 1;
         }
         if (debug) {
            Serial.printf("computer: 0x%02x %c",fromComputer,fromComputer);

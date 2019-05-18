@@ -31,10 +31,17 @@ does RTS/CTS hardware flow control, so the Teensy program looks for XON/XOFF fro
 and stops reading from the computer serial port when it last saw XOFF, which lets the hardware
 UART's flow control to just work.
 
+One of the disadvantages of the LQP02 is that it was intended as a strictly output device, and
+as a result being able to see what you are typing is not prioritized.  I saw a video on youtube
+(https://www.youtube.com/watch?v=TRxz4x45i54) which used the vertical motion control to roll
+the platen to lift the active printing line up above the printing mechanism at appropriate 
+moments so that you can see what you have typed.  On the LQP02, 8 lines seems about right.  
+When rolling the paper back down to continue printing, I am rolling an extra line down and then
+back up one to hopefully improve vertical registration.  Thanks Blake Thomas for the idea.
+
 There are a bunch of TODO's:
 
  * Fix the terminal thinking there are only 24 lines per page and sending a form feed;
- * Look into using platen motion to show what's just been printed (Wheelwriter is better at this);
  * Add a toggle switch to switch between Line and Local mode;
  * Support the mini-DIN8 connected Sun Keyboard;
  * Support output to an IBM Wheelwriter;
