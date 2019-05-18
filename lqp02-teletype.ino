@@ -43,6 +43,15 @@ int sendEscapeSequence(int f) {
         case 9: // set 15 char/inch
             Printer.printf("%c[9w",ESCAPE);
             break;
+        case 10: // form feed
+            Printer.printf("%c",0x0c);
+            break;
+        case 11: // line feed
+            Printer.printf("%cD",ESCAPE);
+            break;
+        case 12: // reverse line feed
+            Printer.printf("%cM",ESCAPE);
+            break;
         default: return -1;
     }
     return 0;
