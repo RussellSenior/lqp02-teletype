@@ -5,21 +5,23 @@
 
 #define Printer Serial1
 #define Computer Serial2
+#define Sun Serial3
 
 #define ESCAPE  0x1B
 
+// PS/2 keyboard interface
 static const int clockPin = 4;
 static const int dataPin = 5;
-bool debug = 0;
+
+bool debug = 1;
 bool local = 0;
 bool rolledUp = 0;
-int linesToRoll = 8;
+int linesToRoll = 12;
 
 int rollUpToShow() {
     if(!rolledUp) {
-        for (int i=0 ; i<linesToRoll ; i++) {
-            Printer.printf("%cD",ESCAPE);
-        }
+        Printer.printf("%c[16t",ESCAPE); // reset line 1 to current line (don't do a form feed! :)
+        Printer.printf("%c[%de",ESCAPE,linesToRoll);
         rolledUp = 1;
     }
     return 0;
@@ -27,10 +29,7 @@ int rollUpToShow() {
 
 int rollDownToPrint() {
     if(rolledUp) {
-        for (int i=0 ; i<(linesToRoll+1) ; i++) {
-            Printer.printf("%cM",ESCAPE);
-        }
-        Printer.printf("%cD",ESCAPE);
+        Printer.printf("%c[%dk",ESCAPE,linesToRoll);
         rolledUp = 0;
     }
     return 0;
@@ -41,6 +40,7 @@ int sendEscapeSequence(int f) {
     switch(f) {
         case 1: // reset printer
             Printer.printf("%cc",ESCAPE);
+            Printer.printf("%c[11l",ESCAPE);
             break;
         case 2: // advance paper to next line
             Printer.printf("%cE",ESCAPE);
@@ -58,13 +58,13 @@ int sendEscapeSequence(int f) {
             Printer.printf("%c[20l",ESCAPE);
             break;
         case 7: // set 8 column tabs
-            Printer.printf("%c[8;16;24;32;40;48;56;64;72;80u",ESCAPE);
+            Printer.printf("%c[9;17;25;33;41;49;57;65;73;81u",ESCAPE);
             break;
         case 8: // unset column tabs
             Printer.printf("%c[3g",ESCAPE);
             break;
         case 9: // set 15 char/inch
-            Printer.printf("%c[9w",ESCAPE);
+            Printer.printf("%c[90;48 G",ESCAPE);
             break;
         case 10: // form feed
             Printer.printf("%c",0x0c);
@@ -163,10 +163,11 @@ void setup() {
     Printer.attachCts(20);
     sendEscapeSequence(1); // reset
     sendEscapeSequence(7); // set tabstops
-    sendEscapeSequence(9); // set 15 chars/inch
+    sendEscapeSequence(9); // set 15 chars/inch 8 lines/inch
     Computer.begin(1200,SERIAL_8N1);
     Computer.attachRts(11);
     Computer.attachCts(23);
+    Sun.begin(1200,SERIAL_8N1);
 }
 
 static ps2::NeutralTranslator translator;
@@ -174,6 +175,7 @@ bool pxon = 1;
 
 bool timedBefore = 0;
 unsigned long lastPrint = 0;
+
 
 void loop() {
     // diagnostics.setLedIndicator<LED_BUILTIN, ps2::DiagnosticsLedBlink::heartbeat>();
@@ -194,7 +196,7 @@ void loop() {
             timedBefore = 1;
         }
         if (debug) {
-           Serial.printf("computer: 0x%02x %c",fromComputer,fromComputer);
+           Serial.printf("computer: 0x%02x %c\n",fromComputer,fromComputer);
         }
     }
     if (Printer.available() > 0) {
@@ -211,8 +213,17 @@ void loop() {
         Serial.printf("printer: 0x%02x %c\n",fromPrinter,fromPrinter);
     }
 
+    if (Sun.available() > 0) {
+        unsigned int fromSun;
+        fromSun = Sun.read();
+        if (debug) {
+            Serial.printf("sunkbd: 0x%02x\n",fromSun);
+        }
+    }
+
     ps2::KeyboardOutput scanCode = ps2Keyboard.readScanCode();
     if (scanCode != ps2::KeyboardOutput::none) {
+        // Serial.printf("kbd_scan = %0x\n",scanCode);
         ps2::KeyCode translated = translator.translatePs2Keycode(scanCode);
         if (translated != ps2::KeyCode::PS2_NONE) {
             int c = keycode2ascii(translated);
