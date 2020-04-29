@@ -39,6 +39,11 @@ moments so that you can see what you have typed.  On the LQP02, 12 lines seems a
 When rolling the paper back down to continue printing, I am rolling an extra line down and then
 back up one to hopefully improve vertical registration.  Thanks Blake Thomas for the idea.
 
+The other disadvantage is that the LQP02 prints bi-directionally, which means that it needs
+to pause on input to see if more input is coming. If there is, then it can effectively read
+ahead and see the opportunity to print backwards. This introduces an annoying lag between input
+and when the characters are struck. So far, no means of turning off this delay has been found.
+
 There are a bunch of TODO's:
 
  * Add a toggle switch to switch between Line and Local mode;
