@@ -1,0 +1,119 @@
+.HEA
+.TIM Mon 22 Jun 2020 12:53:11 AM PDT
+.APP "Eeschema 5.1.6-c6e7f7d~86~ubuntu16.04.1"
+
+.ADD_COM U1 "Teensy3.2"
+.ADD_COM J3 "DB9_Female"
+.ADD_COM J1 "Mini-DIN-6"
+.ADD_COM J2 "Mini-DIN-8"
+.ADD_COM C1 "C"
+.ADD_COM C5 "C"
+.ADD_COM C7 "C"
+.ADD_COM C8 "C"
+.ADD_COM C3 "C"
+.ADD_COM U2 "MAX3232"
+.ADD_COM J4 "DB9_Female"
+.ADD_COM C2 "C"
+.ADD_COM C6 "C"
+.ADD_COM C9 "C"
+.ADD_COM C10 "C"
+.ADD_COM C4 "C"
+.ADD_COM U3 "MAX3232"
+.ADD_COM H1 "MountingHole_Pad"
+.ADD_COM H2 "MountingHole_Pad"
+.ADD_COM H3 "MountingHole_Pad"
+.ADD_COM H4 "MountingHole_Pad"
+
+
+.ADD_TER U3.16 "VCC"
+.TER     U2.16
+         J2.8
+         J1.4
+         J2.3
+         C3.2
+         C4.2
+         U1.33
+.ADD_TER J3.5 "GND"
+.TER     H4.1
+         H3.1
+         H2.1
+         H1.1
+         U1.1
+         C10.1
+         J4.5
+         C3.1
+         C9.1
+         C4.1
+         J1.3
+         J2.1
+         J2.2
+         C7.1
+         U2.15
+         U3.15
+         C8.1
+.ADD_TER U3.3 "Net-(C2-Pad2)"
+.TER     C2.2
+.ADD_TER U3.6 "Net-(C10-Pad2)"
+.TER     C10.2
+.ADD_TER C6.2 "Net-(C6-Pad2)"
+.TER     U3.5
+.ADD_TER C6.1 "Net-(C6-Pad1)"
+.TER     U3.4
+.ADD_TER C9.2 "Net-(C9-Pad2)"
+.TER     U3.2
+.ADD_TER C2.1 "Net-(C2-Pad1)"
+.TER     U3.1
+.ADD_TER U1.6 "/PS2_CLK"
+.TER     J1.5
+.ADD_TER U1.11 "/RX2"
+.TER     U3.12
+.ADD_TER U1.13 "/RTS2"
+.TER     U3.10
+.ADD_TER U1.12 "/TX2"
+.TER     U3.11
+.ADD_TER U2.10 "/RTS1"
+.TER     U1.4
+.ADD_TER U2.9 "/CTS1"
+.TER     U1.27
+.ADD_TER U1.10 "/TX3"
+.TER     J2.6
+.ADD_TER J1.1 "/PS2_DATA"
+.TER     U1.7
+.ADD_TER U3.9 "/CTS2"
+.TER     U1.30
+.ADD_TER J4.7 "/CTS_COMP"
+.TER     U3.8
+.ADD_TER U3.13 "/RX_COMP"
+.TER     J4.2
+.ADD_TER U3.7 "/RTS_COMP"
+.TER     J4.8
+.ADD_TER J4.3 "/TX_COMP"
+.TER     U3.14
+.ADD_TER J2.5 "/RX3"
+.TER     U1.9
+.ADD_TER J3.7 "/CTS_PTR"
+.TER     U2.8
+.ADD_TER J3.3 "/TX_PRT"
+.TER     U2.14
+.ADD_TER U2.6 "Net-(C8-Pad2)"
+.TER     C8.2
+.ADD_TER C7.2 "Net-(C7-Pad2)"
+.TER     U2.2
+.ADD_TER C5.2 "Net-(C5-Pad2)"
+.TER     U2.5
+.ADD_TER C5.1 "Net-(C5-Pad1)"
+.TER     U2.4
+.ADD_TER U2.3 "Net-(C1-Pad2)"
+.TER     C1.2
+.ADD_TER C1.1 "Net-(C1-Pad1)"
+.TER     U2.1
+.ADD_TER U2.12 "/RX1"
+.TER     U1.2
+.ADD_TER U1.3 "/TX1"
+.TER     U2.11
+.ADD_TER U2.7 "/RTS_PTR"
+.TER     J3.8
+.ADD_TER J3.2 "/RX_PTR"
+.TER     U2.13
+
+.END
